@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app>
+<head>
+	<title>Web Speech API + Angular.js</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=0">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+	<script src="./app.js"></script>
+</head>
+<body>
+	<div ng-controller="WebSpeechCtrl" >
+		<input type="button" value="診断開始" ng-click="start()"/>
+		<input type="button" value="診断終了" ng-click="stop()"/>
+		<br>
+		{{state}}
+		{{recognizedText}}
+		<canvas width="300" height="300" id="canvasArea"></canvas>
+	</div>
+</body>
+</html>
