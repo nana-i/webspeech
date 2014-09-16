@@ -3,30 +3,31 @@ recognition.lang = "ja-JP";
 recognition.continuous = true;
 
 var angle = [0, 90, 180, 270];
-var size = [30, 60, 90, 120];
-var ANGLE_TOP = '上';
+var size = [50, 100, 150, 200];
+
 var ANGLE_RIGHT = '右';
 var ANGLE_DOWN = '下';
 var ANGLE_LEFT = '左';
+var ANGLE_TOP = '上';
 
 function WebSpeechCtrl($scope) {
 	// 開始ボタン押下
 	$scope.start = function() {
 
-		// 傾きを取得
+		// 初期表示のサイズと傾きを取得する
 		var now_angle_index = get_random_index(angle.length);
-		landolt(size[get_random_index(size.length)], angle[now_angle_index]);
+		var now_size = size.length-1;
+		landolt(size[now_size], angle[now_angle_index]);
 
+		// OK結果総数
+		var answerCount = 0;
+
+		// 解析スタート
 		recognition.start()
 
 		//話し声の認識中
 		recognition.onsoundstart = function(){
 			$scope.state = "認識中";
-		};
-
-		//マッチする認識が無い
-		recognition.onnomatch = function(){
-			$scope.recognizedText = "もう一度試してください";
 		};
 
 		//エラー
@@ -44,41 +45,63 @@ function WebSpeechCtrl($scope) {
 			var results = event.results;
 			for (var i = event.resultIndex; i<results.length; i++){
 				$scope.recognizedText = results[i][0].transcript;
-				
 				switch (angle[now_angle_index]) {
-					// 上
-					case angle[0]:
-						// TODO 音声認識($scope.recognizedText)の補正
-						if ($scope.recognizedText === ANGLE_TOP) {
-							console.log('OK');
-						}
-						break;
 					// 右
-					case angle[1]:
+					case angle[0]:
 						if ($scope.recognizedText === ANGLE_RIGHT) {
-							console.log('OK');
+							$scope.result = "OK";
+							answerCount = answerCount+1;
+						} else {
+							$scope.result = "NG";
 						}
 						break;
 					// 下
-					case angle[2]:
+					case angle[1]:
 						if ($scope.recognizedText === ANGLE_DOWN) {
-							console.log('OK');
+							$scope.result = "OK";
+							answerCount = answerCount+1;
+						} else {
+							$scope.result = "NG";
 						}
 						break;
 					// 左
-					case angle[3]:
+					case angle[2]:
 						if ($scope.recognizedText === ANGLE_LEFT) {
-							console.log('OK');
+							$scope.result = "OK";
+							answerCount = answerCount+1;
+						} else {
+							$scope.result = "NG";
+						}
+						break;
+					// 上
+					case angle[3]:
+						if ($scope.recognizedText === ANGLE_TOP) {
+							$scope.result = "OK";
+							answerCount = answerCount+1;
+						} else {
+							$scope.result = "NG";
 						}
 						break;
 					default:
-						console.log('NG');
+						$scope.result = "NG";
 						break;
 				}
 
+				// 次の判定があれば表示
+				if (now_size !== 0) {
+					now_angle_index = get_random_index(angle.length);
+					now_size = now_size-1;
+					landolt(size[now_size], angle[now_angle_index]);
+				} else {
+					// 解析終了
+					recognition.stop();
+					$scope.state = "停止中";
+					$scope.answerCount = size.length + "回中" +answerCount + "回成功しました。";
+				}
+				
 				// 再バウンド
 				$scope.$apply();
-				
+
 			}
 		};
 	};

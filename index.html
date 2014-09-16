@@ -1,22 +1,60 @@
 <!DOCTYPE html>
 <html lang="ja" ng-app>
 <head>
-	<title>Web Speech API + Angular.js</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=0">
-	<meta http-equiv="Content-Style-Type" content="text/css">
-	<meta http-equiv="Content-Script-Type" content="text/javascript">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
-	<script src="./app.js"></script>
+    <title>Web Speech API + Angular.js</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/jumbotron-narrow.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+    <script src="./js/app.js"></script>
 </head>
 <body>
-	<div ng-controller="WebSpeechCtrl" >
-		<input type="button" value="診断開始" ng-click="start()"/>
-		<input type="button" value="診断終了" ng-click="stop()"/>
-		<br>
-		{{state}}
-		{{recognizedText}}
-		<canvas width="300" height="300" id="canvasArea"></canvas>
-	</div>
+    <div class="container" ng-controller="WebSpeechCtrl">
+        <div class="header">
+            <h3 class="text-muted">JavaScriptを使用して何か作るゼミ</h3>
+        </div>
+
+        <div class="jumbotron">
+            <h1>視力検査</h1>
+            <p class="lead">Google Web Speech APIを使用して、視力検査を行います。<br>輪の空いている方向を、「上」「右」「下」「左」で回答してください。</p>
+            <p><a class="btn btn-lg btn-success" style="margin-right:20px" href="#start" role="button" ng-click="start()">診断開始</a>
+            <a class="btn btn-lg btn-info" href="#" role="button" ng-click="stop()">診断終了</a></p>
+        </div>
+
+        <div class="row marketing" id="start">
+            <div class="col-lg-12" align="center">
+                <canvas width="400" height="400" id="canvasArea"></canvas>
+            </div>
+        </div>
+
+        <div class="jumbotron" style="padding:10px;">
+            <h1 style="color:#ff0000;">{{result}}</h1>
+                        <h1 style="color:#ff0000;">{{answerCount}}</h1>
+
+            <p>{{recognizedText}}
+            <p>{{state}}</p>
+
+        </div>
+
+        <div class="row marketing">
+            <div class="col-lg-6">
+                <h4>注意事項1</h4>
+                <p>最新のGoogle Chromeブラウザを使用してください。</p>
+
+                <h4>注意事項2</h4>
+                <p>医療の検証はしていませんので、お遊び程度にお楽しみください。</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© Nana Ichikawa @ NTT Resonant Inc, 2014</p>
+        </div>
+
+    </div> <!-- /container -->
+
 </body>
 </html>
